@@ -6,7 +6,7 @@ import * as contactsActions from "../../redux/contacts/contacts-actions";
 import useLocalStorage from "../../hooks/useLocalStorage";
 import s from "./ContactForm.module.css";
 
-const ContactForm = ({ onAdd, onCheckContact }) => {
+const ContactForm = ({ onAdd, checkUniqueContact }) => {
   const [name, setName] = useLocalStorage("name", "");
   const [number, setNumber] = useLocalStorage("number", "");
 
@@ -33,7 +33,7 @@ const ContactForm = ({ onAdd, onCheckContact }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // const isValidatedForm = onCheckContact(name);
+    // const isValidatedForm = checkUniqueContact(name);
     // if (!isValidatedForm) {
     //   return;
     // }
@@ -89,7 +89,7 @@ const ContactForm = ({ onAdd, onCheckContact }) => {
 
 ContactForm.propTypes = {
   onAdd: PropTypes.func.isRequired,
-  // onCheckContact: PropTypes.func.isRequired,
+  // checkUniqueContact: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
