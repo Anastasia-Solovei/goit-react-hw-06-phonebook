@@ -2,12 +2,10 @@ import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import * as contactsActions from "../../redux/contacts/contacts-actions";
-
 import ContactItem from "./ContactItem";
 import s from "./ContactList.module.css";
 
 const ContactList = ({ contacts, onDeleteContact }) => {
-  console.log(contacts);
   return (
     <ul className={s.ContactList}>
       {contacts &&
@@ -27,11 +25,16 @@ const ContactList = ({ contacts, onDeleteContact }) => {
 };
 
 ContactList.propTypes = {
+  contacts: PropTypes.arrayOf(PropTypes.shape),
   onDeleteContact: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-  contacts: state.contacts.items,
+const getVisibleContacts = (allContacts, filter) => {
+  return allContacts.filter(({ name }) => name.toLowerCase().includes(filter));
+};
+
+const mapStateToProps = ({ contacts: { items, filter } }) => ({
+  contacts: getVisibleContacts(items, filter),
 });
 
 const mapDispatchToProps = (dispatch) => ({

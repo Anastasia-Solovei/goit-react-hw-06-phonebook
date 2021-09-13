@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import PropTypes from "prop-types";
 import * as contactsActions from "../../redux/contacts/contacts-actions";
-
 import useLocalStorage from "../../hooks/useLocalStorage";
 import s from "./ContactForm.module.css";
 
