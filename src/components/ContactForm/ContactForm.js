@@ -1,14 +1,14 @@
-import React from "react";
+import { useState } from "react";
 import { connect } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import PropTypes from "prop-types";
 import * as contactsActions from "../../redux/contacts/contacts-actions";
-import useLocalStorage from "../../hooks/useLocalStorage";
+
 import s from "./ContactForm.module.css";
 
-const ContactForm = ({ onAdd, checkUniqueContact }) => {
-  const [name, setName] = useLocalStorage("name", "");
-  const [number, setNumber] = useLocalStorage("number", "");
+const ContactForm = ({ onAdd }) => {
+  const [name, setName] = useState("name", "");
+  const [number, setNumber] = useState("number", "");
 
   const nameInputId = uuidv4();
   const numberInputId = uuidv4();
@@ -30,10 +30,18 @@ const ContactForm = ({ onAdd, checkUniqueContact }) => {
     }
   };
 
+  // const checkUniqueContact = (items) => {
+  //   const isExistContact = !!items.find((contact) => contact.name === name);
+
+  //   isExistContact && alert("Contact is already exist!");
+
+  //   return !isExistContact;
+  // };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // const isValidatedForm = checkUniqueContact(name);
+    // const isValidatedForm = uniqueContact;
     // if (!isValidatedForm) {
     //   return;
     // }
@@ -89,11 +97,17 @@ const ContactForm = ({ onAdd, checkUniqueContact }) => {
 
 ContactForm.propTypes = {
   onAdd: PropTypes.func.isRequired,
-  // checkUniqueContact: PropTypes.func.isRequired,
+  //checkUniqueContact: PropTypes.func.isRequired,
 };
+
+// const mapStateToProps = (state) => ({
+//   uniqueContact: checkUniqueContact(state.contacts.items),
+// });
 
 const mapDispatchToProps = (dispatch) => ({
   onSubmit: (contact) => dispatch(contactsActions.addContact(contact)),
+  // checkUniqueContact: (name) =>
+  //   dispatch(contactsActions.checkUniqueContact(name)),
 });
 
 export default connect(null, mapDispatchToProps)(ContactForm);
