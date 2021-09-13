@@ -1,11 +1,13 @@
 import React from "react";
+import { connect } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import PropTypes from "prop-types";
+import * as contactsActions from "../../redux/contacts/contacts-actions";
 
 import useLocalStorage from "../../hooks/useLocalStorage";
 import s from "./ContactForm.module.css";
 
-export default function ContactForm({ onAdd, onCheckContact }) {
+const ContactForm = ({ onAdd, onCheckContact }) => {
   const [name, setName] = useLocalStorage("name", "");
   const [number, setNumber] = useLocalStorage("number", "");
 
@@ -32,12 +34,13 @@ export default function ContactForm({ onAdd, onCheckContact }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const isValidatedForm = onCheckContact(name);
-    if (!isValidatedForm) {
-      return;
-    }
+    // const isValidatedForm = onCheckContact(name);
+    // if (!isValidatedForm) {
+    //   return;
+    // }
 
-    isValidatedForm && onAdd({ id: uuidv4(), name: name, number: number });
+    //isValidatedForm &&
+    onAdd({ id: uuidv4(), name: name, number: number });
     setName("");
     setNumber("");
   };
@@ -83,9 +86,15 @@ export default function ContactForm({ onAdd, onCheckContact }) {
       </button>
     </form>
   );
-}
+};
 
 ContactForm.propTypes = {
   onAdd: PropTypes.func.isRequired,
-  onCheckContact: PropTypes.func.isRequired,
+  // onCheckContact: PropTypes.func.isRequired,
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  onSubmit: (contact) => dispatch(contactsActions.addContact(contact)),
+});
+
+export default connect(null, mapDispatchToProps)(ContactForm);
