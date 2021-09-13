@@ -14,7 +14,7 @@ export const deleteContact = (id) => ({
   payload: id,
 });
 
-// export const filterContacts = (filter) => ({
-//   type: actionTypes.FILTER_CONTACTS,
-//   payload: filter,
-// });
+export const changeFilter = (filter) => ({
+  type: actionTypes.CHANGE_FILTER,
+  payload: filter,
+});
