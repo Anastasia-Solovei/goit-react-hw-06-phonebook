@@ -11,7 +11,11 @@ const itemsReducer = createReducer([], {
   [addContact]: (state, { payload }) => [...state, payload],
   [deleteContact]: (state, { payload }) =>
     state.filter(({ id }) => id !== payload),
-  [checkUniqueContact]: (state, { payload }) => {},
+  // [checkUniqueContact]: (state, { payload }) => {
+  //   const isExistContact = !!state.find((item) => item.name === payload);
+  //   isExistContact && alert("Contact is already exist!");
+  //   return !isExistContact;
+  // },
 });
 
 const filterReducer = createReducer("", {
