@@ -14,7 +14,15 @@ const itemsReducer = (state = [], { type, payload }) => {
   }
 };
 
-const filterReducer = (state = "", action) => state;
+const filterReducer = (state = "", { type, payload }) => {
+  switch (type) {
+    case actionTypes.CHANGE_FILTER:
+      return payload;
+
+    default:
+      return state;
+  }
+};
 
 const contactsReducer = combineReducers({
   items: itemsReducer,
