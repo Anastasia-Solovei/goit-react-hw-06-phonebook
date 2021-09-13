@@ -22,7 +22,7 @@ const App = ({ items, onAddContact }) => {
       <Section>
         <ContactForm
           onAdd={onAddContact}
-          //onCheckContact={handleCheckUniqueContact}
+          //onCheckUniqueContact={handleCheckUniqueContact}
         />
       </Section>
 
