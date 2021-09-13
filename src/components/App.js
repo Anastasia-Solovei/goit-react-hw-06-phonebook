@@ -1,69 +1,45 @@
-import { useState, useEffect } from "react";
-import useLocalStorage from "../hooks/useLocalStorage";
-
+// import useLocalStorage from "../hooks/useLocalStorage";
+import React from "react";
+import { connect } from "react-redux";
+import * as actions from "../redux/contacts/contacts-actions";
 import Section from "./Section";
 import ContactForm from "./ContactForm";
 import Filter from "./Filter";
 import ContactList from "./ContactList";
 
-export default function App() {
-  const [contacts, setContacts] = useLocalStorage("contacts", []);
-  const [filter, setFilter] = useLocalStorage("filter", "");
-  const [filteredContacts, setFilteredContacts] = useState("");
+const App = ({ items, onAddContact }) => {
+  // const handleCheckUniqueContact = (name) => {
+  //   const isExistContact = !!contacts.find((contact) => contact.name === name);
 
-  useEffect(() => {
-    setFilteredContacts(() => {
-      return contacts.filter((contact) =>
-        contact.name.toLowerCase().includes(filter)
-      );
-    });
-  }, [contacts, filter]);
+  //   isExistContact && alert("Contact is already exist!");
 
-  const handleAddContact = (contact) => {
-    setContacts((prevState) => {
-      return [contact, ...prevState];
-    });
-  };
-
-  const handleDeleteContact = (e) => {
-    const { id } = e.target;
-
-    setContacts((prevState) => {
-      return prevState.filter((contact) => contact.id !== id);
-    });
-  };
-
-  const handleCheckUniqueContact = (name) => {
-    const isExistContact = !!contacts.find((contact) => contact.name === name);
-
-    isExistContact && alert("Contact is already exist!");
-
-    return !isExistContact;
-  };
-
-  const handleFilterChange = (e) => {
-    const { value } = e.target;
-
-    setFilter(value.toLowerCase());
-  };
+  //   return !isExistContact;
+  // };
 
   return (
     <>
       <h1>Phonebook</h1>
       <Section>
         <ContactForm
-          onAdd={handleAddContact}
-          onCheckContact={handleCheckUniqueContact}
+          onAdd={onAddContact}
+          //onCheckContact={handleCheckUniqueContact}
         />
       </Section>
 
       <Section title={"Contacts"}>
-        <Filter value={filter} onChange={handleFilterChange} />
-        <ContactList
-          contacts={filteredContacts}
-          onDeleteContact={handleDeleteContact}
-        />
+        <Filter />
+        <ContactList contacts={items} />
       </Section>
     </>
   );
-}
+};
+
+const mapStateToProps = (state) => ({
+  items: state.contacts.items,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onAddContact: (item) => dispatch(actions.addContact(item)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
