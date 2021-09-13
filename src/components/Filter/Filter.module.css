@@ -1,0 +1,11 @@
+.FilterLabel {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.FilterInput {
+  display: block;
+  border: 2px solid rgb(206, 205, 205);
+}

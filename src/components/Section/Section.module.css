@@ -1,0 +1,11 @@
+.Section {
+  margin-top: 50px;
+  margin-left: 100px;
+  width: 400px;
+}
+
+.SectionTitle {
+  margin: 0;
+  font-size: 35px;
+  margin-bottom: 20px;
+}
