@@ -3,20 +3,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import PropTypes from "prop-types";
 import { getContacts } from "../../redux/contacts/contacts-selectors";
-import * as contactsActions from "../../redux/contacts/contacts-actions";
+import { addContact } from "../../redux/contacts/contacts-actions";
 
 import s from "./ContactForm.module.css";
 
 export default function ContactForm() {
-  const contacts = useSelector(getContacts);
-  const dispatch = useDispatch();
-  const onAddContact = (item) => dispatch(contactsActions.addContact(item));
-
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
-
   const nameInputId = uuidv4();
   const numberInputId = uuidv4();
+
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
+  // const onAddContact = (item) => dispatch(contactsActions.addContact(item));
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,7 +45,8 @@ export default function ContactForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onAddContact({ id: uuidv4(), name: name, number: number });
+    dispatch(addContact({ id: uuidv4(), name: name, number: number }));
+    //onAddContact({ id: uuidv4(), name: name, number: number });
     checkUniqueContact();
     setName("");
     setNumber("");

@@ -8,19 +8,19 @@ const initialState = [
   { id: "id-4", name: "Sergiy Prodan", number: "227-91-26" },
 ];
 
-const itemsReducer = createReducer(initialState, {
+const items = createReducer(initialState, {
   [addContact]: (state, { payload }) => [...state, payload],
   [deleteContact]: (state, { payload }) =>
     state.filter(({ id }) => id !== payload),
 });
 
-const filterReducer = createReducer("", {
+const filter = createReducer("", {
   [changeFilter]: (_, { payload }) => payload,
 });
 
-const contactsReducer = combineReducers({
-  items: itemsReducer,
-  filter: filterReducer,
-});
+// const contactsReducer = combineReducers({
+//   items: itemsReducer,
+//   filter: filterReducer,
+// });
 
-export default contactsReducer;
+export default combineReducers({ items, filter });
