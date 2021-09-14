@@ -1,14 +1,19 @@
 import { useState } from "react";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import PropTypes from "prop-types";
+import { getContacts } from "../../redux/contacts/contacts-selectors";
 import * as contactsActions from "../../redux/contacts/contacts-actions";
 
 import s from "./ContactForm.module.css";
 
-const ContactForm = ({ onAdd }) => {
-  const [name, setName] = useState("name", "");
-  const [number, setNumber] = useState("number", "");
+export default function ContactForm() {
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
+  const onAddContact = (item) => dispatch(contactsActions.addContact(item));
+
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
 
   const nameInputId = uuidv4();
   const numberInputId = uuidv4();
@@ -30,24 +35,19 @@ const ContactForm = ({ onAdd }) => {
     }
   };
 
-  // const checkUniqueContact = (items) => {
-  //   const isExistContact = !!items.find((contact) => contact.name === name);
-
-  //   isExistContact && alert("Contact is already exist!");
-
-  //   return !isExistContact;
-  // };
+  const checkUniqueContact = () => {
+    contacts.forEach((contact) => {
+      if (contact.name === name || contact.number === number) {
+        alert("Contact is already exist!");
+      }
+      return;
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    // const isValidatedForm = uniqueContact;
-    // if (!isValidatedForm) {
-    //   return;
-    // }
-
-    //isValidatedForm &&
-    onAdd({ id: uuidv4(), name: name, number: number });
+    onAddContact({ id: uuidv4(), name: name, number: number });
+    checkUniqueContact();
     setName("");
     setNumber("");
   };
@@ -93,21 +93,9 @@ const ContactForm = ({ onAdd }) => {
       </button>
     </form>
   );
-};
+}
 
-ContactForm.propTypes = {
-  onAdd: PropTypes.func.isRequired,
-  //checkUniqueContact: PropTypes.func.isRequired,
-};
-
-// const mapStateToProps = (state) => ({
-//   uniqueContact: checkUniqueContact(state.contacts.items),
-// });
-
-const mapDispatchToProps = (dispatch) => ({
-  onSubmit: (contact) => dispatch(contactsActions.addContact(contact)),
-  // checkUniqueContact: (name) =>
-  //   dispatch(contactsActions.checkUniqueContact(name)),
-});
-
-export default connect(null, mapDispatchToProps)(ContactForm);
+// ContactForm.propTypes = {
+//   onAddContact: PropTypes.func.isRequired,
+//   checkUniqueContact: PropTypes.func.isRequired,
+// };
