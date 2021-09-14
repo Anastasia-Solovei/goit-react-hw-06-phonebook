@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import PropTypes from "prop-types";
+
 import { getContacts } from "../../redux/contacts/contacts-selectors";
 import { addContact } from "../../redux/contacts/contacts-actions";
-
 import s from "./ContactForm.module.css";
 
 export default function ContactForm() {
@@ -15,7 +15,6 @@ export default function ContactForm() {
 
   const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
-  // const onAddContact = (item) => dispatch(contactsActions.addContact(item));
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,20 +33,26 @@ export default function ContactForm() {
     }
   };
 
-  const checkUniqueContact = () => {
-    contacts.forEach((contact) => {
-      if (contact.name === name || contact.number === number) {
-        alert("Contact is already exist!");
-      }
-      return;
-    });
+  const checkUniqueContact = (allContasts, newName) => {
+    const isExistContact = !!allContasts.find(
+      (contact) => contact.name === newName
+    );
+
+    isExistContact && alert("Contact is already exist!");
+
+    return !isExistContact;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addContact({ id: uuidv4(), name: name, number: number }));
-    //onAddContact({ id: uuidv4(), name: name, number: number });
-    checkUniqueContact();
+
+    const uniqueContact = checkUniqueContact(contacts, name);
+    if (!uniqueContact) {
+      return;
+    }
+
+    uniqueContact &&
+      dispatch(addContact({ id: uuidv4(), name: name, number: number }));
     setName("");
     setNumber("");
   };
@@ -95,7 +100,7 @@ export default function ContactForm() {
   );
 }
 
-// ContactForm.propTypes = {
-//   onAddContact: PropTypes.func.isRequired,
-//   checkUniqueContact: PropTypes.func.isRequired,
-// };
+ContactForm.propTypes = {
+  onAddContact: PropTypes.func,
+  checkUniqueContact: PropTypes.func,
+};
